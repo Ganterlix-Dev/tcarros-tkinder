@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <title>pdf</title>
+  <style>
+      html,body { height:70%; }
+      body {
+        background-color: #DDECF4;
+        background-size: 100% 100%;
+        font-family: ' Poppins ';
+        font-weight: 300;
+        height: 100%;
+        color: #262B34;
+      }
+      .bold { 
+        font-weight: 300;
+      }
+      h1 { 
+        margin: 30px;
+        width: 100%;
+        text-align: center; 
+      }
+      table {
+        text-align: center;
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        background-color: #aab7cf;
+      }
+      table th { background-color: #28344b; color: white; }
+      table td, table th { padding: 10px; }
+  </style>
+  </head>
+  <body>
+      <h1>Reporte de usuarios</h1>
+      <table>
+          <thead>
+            <tr>
+              {% for col in cols %} <th>{{ col }}</th> {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+              <tr>
+                {% for col in row %}  <td> {{ col }} </td> {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+  </body>
+</html>
