@@ -1,30 +1,39 @@
 from tkinter                      import *
 from tkinter.messagebox           import *
 from controllers.controlador_user import controlador_user
+from os                           import remove
 
 class Crear_vista(Toplevel):
-  def crear(self, nombre, apellido, telefono, correo, tipo_usuario):
-    resultado = controlador_user.insert(nombre, apellido, telefono, correo, tipo_usuario)
+  def crear(self,nombre, apellido, telefono, correo, clave, tipo_usuario):
+    resultado = controlador_user.insert(nombre, apellido, telefono, correo, clave, tipo_usuario)
     if resultado["error"]:
       showerror("ERROR", resultado["msg"])
     else:
       showinfo("EXITO", "Usuario creado exitosamente")
 
-  def __init__(self, root):
+  def __init__(self, root_admin, root, logo):
     self.root = root
+    self.logo = logo
 
     super().__init__(
-      root, 
-      bg='steel blue',
-      padx=10, pady=10
+      root_admin, 
+      bg='steel blue'
     )
+
+    def cerrar():
+      remove("sesion.json")
+      self.root.destroy()
 
     self.title("Crear")
     self.geometry("800x600")
     self.resizable(False, False)
     self.propagate(False)
-    self.protocol("WM_DELETE_WINDOW", lambda: self.root.destroy())
+    self.protocol("WM_DELETE_WINDOW", lambda: cerrar())
+    self.iconphoto(False, self.logo, self.logo)
 
+    def volver():
+      self.destroy()
+      root_admin.deiconify()
 
     content_frame = Frame(
       self, 
@@ -33,14 +42,25 @@ class Crear_vista(Toplevel):
       padx=10, pady=10
     )
     content_frame.pack(padx=20, pady=20)
-    content_frame.propagate(False)
+    content_frame.grid_propagate(False)
 
-    datos = ["Nombre", "Apellido", "Telefono", "Correo", "Tipo de usuario"]
+    Button(
+      self,
+      text="Volver",
+      borderwidth=0,
+      bg="firebrick1",
+      fg="white",
+      font=("Calibri", 14),
+      command=volver
+    ).place(x=0, y=0)
+
+    datos = ["Nombre", "Apellido", "Telefono", "Correo", "Clave", "Tipo de usuario"]
     
     nombre_variable   = StringVar()
     apellido_variable = StringVar()
     telefono_variable = StringVar()
     correo_variable   = StringVar()
+    clave_variable    = StringVar()
     tipo_variable     = StringVar()
 
     variables = [
@@ -48,6 +68,7 @@ class Crear_vista(Toplevel):
       apellido_variable,
       telefono_variable,
       correo_variable,
+      clave_variable,
       tipo_variable
     ]
     
@@ -83,9 +104,10 @@ class Crear_vista(Toplevel):
         apellido_variable.get(),
         telefono_variable.get(),
         correo_variable.get(),
+        clave_variable.get(),
         tipo_variable.get(),
       )
     ).pack(anchor=CENTER)
 
     if self:
-      self.root.withdraw()
+      root_admin.withdraw()

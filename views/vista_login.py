@@ -3,6 +3,7 @@ from tkinter.messagebox           import *
 from controllers.controlador_user import controlador_user
 from views.vista_admin            import Admin_vista
 from views.vista_mecanico         import Mecanico_vista
+import json
 
 class Inicio_sesion(Frame):
   def iniciar_sesion(self, email, password):
@@ -10,19 +11,32 @@ class Inicio_sesion(Frame):
     if not respuesta.startswith("Admin") and not respuesta.startswith("Mecanico"):
       showerror("ERROR", respuesta)
     else:
-      if respuesta == "Admin":
-        Admin_vista(self.root)
-      else:
-        Mecanico_vista(self.root)
+      usuario = controlador_user.select_by_email(email=email)
+      usuario = usuario["msg"]
+      columns = ["id", "nombre", "apellido", "telefono", "correo", "clave", "tipo_usuario"]
+      data    = {}
+      sesion  = open("sesion.json", "w")
 
-  def __init__(self, root):
+      for index, value in enumerate(usuario):
+        data[columns[index]] = value
+
+      sesion.write(json.dumps(data))
+      
+      if respuesta == "Admin":
+        Admin_vista(self.root, img=self.admin, logo=self.logo)
+      else:
+        Mecanico_vista(self.root, img=self.mecanico, logo=self.logo)
+
+  def __init__(self, root, admin_img, mecanico_img, logo):
     super().__init__(
       root, 
-      bg='steel blue',
+      bg="#104e8b",
       width=600, height=400,
-      padx=10, pady=10
     )
-    self.root = root
+    self.root     = root
+    self.admin    = admin_img
+    self.mecanico = mecanico_img
+    self.logo     = logo
     self.propagate(False)
 
     email_variable  = StringVar()
@@ -30,16 +44,16 @@ class Inicio_sesion(Frame):
 
     Label(
       self,
+      bg="#104e8b",
       text="Inicio de sesion",
-      bg="steel blue",
       fg="white",
       font=("Calibri", 26)
     ).pack(anchor=CENTER, pady=20)
 
     Label(
       self,
+      bg="#104e8b",
       text="Correo electronico",
-      bg="steel blue",
       fg="white",
       font=("Calibri", 18),
       width=32, 
@@ -56,8 +70,8 @@ class Inicio_sesion(Frame):
 
     Label(
       self,
+      bg="#104e8b",
       text="Clave",
-      bg="steel blue",
       fg="white",
       font=("Calibri", 18),
       width=32, 
@@ -83,5 +97,5 @@ class Inicio_sesion(Frame):
       command=lambda: self.iniciar_sesion(email_variable.get(), pass_variable.get())
     ).pack(anchor=CENTER, pady=20)
 
-    self.pack(padx=20, pady=20)
+    self.pack(padx=20, pady=100, anchor=E)
         

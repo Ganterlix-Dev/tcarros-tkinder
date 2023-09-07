@@ -11,8 +11,6 @@ class admin():
     if not user:
       return 'el usuario no existe o el correo es incorrecto'
     
-    print(user)
-    
     clave_hasheada = user[5]
     
     clave_correcta = checkpw(clave.encode("UTF-8"), clave_hasheada.encode("UTF-8"))
@@ -44,6 +42,15 @@ class admin():
   def select_one(self, id):
     cursor = con.cursor()
     sql = f"SELECT * FROM usuario WHERE id = {id};"
+    cursor.execute(sql)
+    info = cursor.fetchone()
+    cursor.close()
+    return info
+  
+  @classmethod
+  def select_by_email(self, email):
+    cursor = con.cursor()
+    sql = f"SELECT * FROM usuario WHERE email = '{email}';"
     cursor.execute(sql)
     info = cursor.fetchone()
     cursor.close()

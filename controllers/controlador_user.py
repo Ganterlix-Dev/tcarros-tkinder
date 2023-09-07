@@ -44,13 +44,18 @@ class controlador_user:
     return {"error": False, "msg": result}
 
   @classmethod
-  def select_all(self,):
+  def select_all(self):
     user = admin.select_all()
     return {"error": False, "msg": user}
   
   @classmethod
   def select_one(self, id):
     user = admin.select_one(id)
+    return {"error": False, "msg": user}
+  
+  @classmethod
+  def select_by_email(self, email):
+    user = admin.select_by_email(email)
     return {"error": False, "msg": user}
         
   @classmethod

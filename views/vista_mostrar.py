@@ -1,23 +1,32 @@
 from tkinter                      import *
 from tkinter.messagebox           import *
 from controllers.controlador_user import controlador_user
+from os                           import remove
 
 class Mostrar_vista(Toplevel):
-  def __init__(self, root):
+  def __init__(self, root_admin, root, logo):
     self.root = root
+    self.logo = logo
 
     super().__init__(
-      root, 
+      root_admin, 
       bg='steel blue',
-      padx=10, pady=10
     )
+
+    def cerrar():
+      remove("sesion.json")
+      self.root.destroy()
 
     self.title("Crear")
     self.geometry("800x600")
     self.resizable(False, False)
     self.propagate(False)
-    self.protocol("WM_DELETE_WINDOW", lambda: self.root.destroy())
+    self.protocol("WM_DELETE_WINDOW", lambda: cerrar())
+    self.iconphoto(False, self.logo, self.logo)
 
+    def volver():
+      self.destroy()
+      root_admin.deiconify()
 
     content_frame = Frame(
       self, 
@@ -27,6 +36,16 @@ class Mostrar_vista(Toplevel):
     )
     content_frame.pack(padx=20, pady=20)
     content_frame.grid_propagate(False)
+
+    Button(
+      self,
+      text="Volver",
+      borderwidth=0,
+      bg="firebrick1",
+      fg="white",
+      font=("Calibri", 14),
+      command=volver
+    ).place(x=0, y=0)
 
     columnas  = ["ID","Nombre", "Apellido", "Telefono", "Correo", "Tipo de usuario"]
     filas     = controlador_user.select_all()
@@ -64,4 +83,4 @@ class Mostrar_vista(Toplevel):
       y+=1
 
     if self:
-      self.root.withdraw()
+      root_admin.withdraw()

@@ -1,6 +1,7 @@
 from tkinter                      import *
 from tkinter.messagebox           import *
 from controllers.controlador_user import controlador_user
+from os                           import remove
 
 class Editar_vista(Toplevel):
   def editar(self, id, nombre, apellido, telefono, correo, tipo_usuario):
@@ -10,21 +11,29 @@ class Editar_vista(Toplevel):
     else:
       showinfo("EXITO", "Usuario editado exitosamente")
 
-  def __init__(self, root):
+  def __init__(self, root_admin, root, logo):
     self.root = root
+    self.logo = logo
 
     super().__init__(
-      root, 
-      bg='steel blue',
-      padx=10, pady=10
+      root_admin, 
+      bg='steel blue'
     )
+
+    def cerrar():
+      remove("sesion.json")
+      self.root.destroy()
 
     self.title("Crear")
     self.geometry("800x600")
     self.resizable(False, False)
     self.propagate(False)
-    self.protocol("WM_DELETE_WINDOW", lambda: self.root.destroy())
+    self.protocol("WM_DELETE_WINDOW", lambda: cerrar())
+    self.iconphoto(False, self.logo, self.logo)
 
+    def volver():
+      self.destroy()
+      root_admin.deiconify()
 
     content_frame = Frame(
       self, 
@@ -33,7 +42,17 @@ class Editar_vista(Toplevel):
       padx=10, pady=10
     )
     content_frame.pack(padx=20, pady=20)
-    content_frame.propagate(False)
+    content_frame.grid_propagate(False)
+
+    Button(
+      self,
+      text="Volver",
+      borderwidth=0,
+      bg="firebrick1",
+      fg="white",
+      font=("Calibri", 14),
+      command=volver
+    ).place(x=0, y=0)
 
     datos = ["Nombre", "Apellido", "Telefono", "Correo", "Tipo de usuario"]
     
@@ -144,4 +163,4 @@ class Editar_vista(Toplevel):
       ).pack(anchor=CENTER)
 
     if self:
-      self.root.withdraw()
+      root_admin.withdraw()
