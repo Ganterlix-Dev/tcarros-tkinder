@@ -76,11 +76,11 @@ class Respuesta_vista(Toplevel):
       bg="gainsboro",
       cursor="hand2",
       padx=10, pady=10,
-      command=lambda: on_search(id_variable.get())
+      command=lambda: buscar_peticion(id_variable.get())
     )
     buscar_btn.pack(anchor=CENTER)
 
-    def on_search(id):
+    def buscar_peticion(id):
       if not id:
         showerror("ERROR", "Ingrese un id")
       try:
@@ -91,20 +91,31 @@ class Respuesta_vista(Toplevel):
         peticion = peticion_controlador.select_one(id)
         if not peticion:
           showerror("ERROR", "Peticion no encontrada. Intente con otro id")
-        else: on_update(id_label, id_entry, buscar_btn, peticion[0], id)
+        else: actualizar_campos(id_label, id_entry, buscar_btn, peticion[0], id)
 
-    def on_response(id_peticion, respuesta):
+    def responder(id_peticion, respuesta):
       sesion = open("sesion.json", "r")
-      data = sesion.readlines()[0]
-      data = json.loads(id_peticion,respuesta)
-    for data in data:
-      print(data(0))
+      datos_mecanico  = sesion.readlines()[0]
+      datos_mecanico  = json.loads(datos_mecanico) #Datos convertidos a JSON
       
-      pass
-    
-      
+      id_mecanico     = datos_mecanico["id"] #Extraigo el id del mecanico del JSON
 
-    def on_update(id_label, id_entry, buscar_btn, peticion, id):
+      print(id_mecanico, id_peticion, respuesta) #Estos son los datos que debes pasarle al controlador con el metodo insert que TU VAS A CREAR
+
+      # Ahora lo que tienes que hacer es crear el modelo y el controlador de la tabla respuesta
+
+      # models -> modelo_respuesta.py
+      # controllers -> controlador_respuesta.py
+
+      # Tanto en el modelo como en el controlador vas a crear la clase y agregarle el metodo insert con los parametros mecanico (donde ira el id del mecanico), peticion (donde ira el id de la peticion), y la respuesta (que seria la info de la respuesta)
+
+      # Cuando crees ambos importas el controlador y llamas al metodo pasandole los parametros:
+
+      # controlador_respuesta.insert(id_mecanico, id_peticion, respuesta)
+
+      # Y por ultimo muestras un mensaje con showinfo que diga que la respuesta se registro exitosamente
+
+    def actualizar_campos(id_label, id_entry, buscar_btn, peticion, id):
       words = peticion[4].split()
       
       for index, _ in enumerate(words):
@@ -165,7 +176,7 @@ class Respuesta_vista(Toplevel):
         bg="gainsboro",
         cursor="hand2",
         padx=10, pady=10,
-        command=lambda: on_response(
+        command=lambda: responder(
           id, respuesta_variable.get()
         )
       ).grid(row=3, column=1)
