@@ -6,6 +6,7 @@ from os                           import remove
 class Crear_vista(Toplevel):
   def crear(self,nombre, apellido, telefono, correo, clave, tipo_usuario):
     resultado = controlador_user.insert(nombre, apellido, telefono, correo, clave, tipo_usuario)
+    print(resultado)
     if resultado["error"]:
       showerror("ERROR", resultado["msg"])
     else:

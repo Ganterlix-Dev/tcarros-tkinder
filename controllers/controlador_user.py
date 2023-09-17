@@ -38,10 +38,12 @@ class controlador_user:
     if tipo != "cliente" and tipo != "administrador" and tipo != "mecanico":
       return {"error": True, "msg": "El tipo de usuario debe ser: cliente, administrador o mecanico"}
     
-    clave_hash = bcrypt.hashpw(clave.encode("UTF-8"), bcrypt.gensalt(10))
+    clave_hash = bcrypt.hashpw(clave.encode("UTF-8"), bcrypt.gensalt())
+    clave_hash = clave_hash.decode("UTF-8")
+    print(clave_hash)
 
-    result = admin.insert(nombres, apellido, numero, email, clave_hash, tipo)
-    return {"error": False, "msg": result}
+    result, error = admin.insert(nombres, apellido, numero, email, clave_hash, tipo)
+    return {"error": error, "msg": result}
 
   @classmethod
   def select_all(self):

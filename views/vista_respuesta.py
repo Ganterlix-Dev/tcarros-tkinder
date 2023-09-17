@@ -1,7 +1,8 @@
-from tkinter                          import *
-from tkinter.messagebox               import *
-from controllers.controlador_peticion import peticion as peticion_controlador
-from os                               import remove
+from tkinter                           import *
+from tkinter.messagebox                import *
+from controllers.controlador_peticion  import peticion as peticion_controlador
+from controllers.controlador_respuesta import resp
+from os                                import remove
 import json
 
 class Respuesta_vista(Toplevel):
@@ -97,11 +98,14 @@ class Respuesta_vista(Toplevel):
       sesion = open("sesion.json", "r")
       datos_mecanico  = sesion.readlines()[0]
       datos_mecanico  = json.loads(datos_mecanico) #Datos convertidos a JSON
-      
       id_mecanico     = datos_mecanico["id"] #Extraigo el id del mecanico del JSON
-
       print(id_mecanico, id_peticion, respuesta) #Estos son los datos que debes pasarle al controlador con el metodo insert que TU VAS A CREAR
-
+      resultado = resp.insert(id_mecanico, id_peticion, respuesta)
+      print("listo", resultado)
+      if resultado == resultado:
+        showinfo("EXITO", "Usuario creado exitosamente")
+      else:
+        showerror("ERROR", resultado["msg"])
       # Ahora lo que tienes que hacer es crear el modelo y el controlador de la tabla respuesta
 
       # models -> modelo_respuesta.py

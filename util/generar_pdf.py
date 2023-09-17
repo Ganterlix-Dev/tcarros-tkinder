@@ -3,7 +3,7 @@ from jinja2                       import Environment,FileSystemLoader
 from controllers.controlador_user import controlador_user
 import pdfkit
 
-def generar_pdf():    
+def generar_pdf_usuario():    
   path_wkhtmltopdf = r'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
   config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
@@ -18,3 +18,5 @@ def generar_pdf():
   html = usuario_template.render(usuario)
   pdfkit.from_string(html,'reporte.pdf', configuration=config)
   showinfo("EXITO", "Reporte en PDF generado exitosamente!")
+
+
