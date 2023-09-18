@@ -5,7 +5,7 @@ class mecanic():
   def select_all(self):
     con = connect_to_db()
     cursor = con.cursor()
-    sql = f"SELECT * FROM vehiculos"
+    sql = f"SELECT * FROM vehiculo"
     cursor.execute(sql)
     info = cursor.fetchall()
     cursor.close()

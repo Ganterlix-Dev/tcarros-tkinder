@@ -1,7 +1,8 @@
 from tkinter              import *
 from tkinter.messagebox   import *
-
 from os                   import remove
+
+from util.generar_pdf     import *
 
 class PDF_Vista(Toplevel):
   def __init__(self, root_admin, root, logo):
@@ -49,7 +50,7 @@ class PDF_Vista(Toplevel):
       fg="black",
       cursor="hand2",
       width=30,
-      command=lambda: showinfo("creando", "creando pdf:p")
+      command=generar_pdf_usuario
     ).pack(anchor=CENTER, pady=20, padx=120)
 
     Button( 
@@ -61,7 +62,7 @@ class PDF_Vista(Toplevel):
       fg="black",
       cursor="hand2",
       width=30,
-      command=lambda: showinfo("creando", "creando pdf:p")
+      command=generar_pdf_vehiculo
     ).pack(anchor=CENTER, pady=20, padx=120)
 
     Button( 
@@ -73,7 +74,7 @@ class PDF_Vista(Toplevel):
       fg="black",
       cursor="hand2",
       width=30,
-      command=lambda: showinfo("creando", "creando pdf:p")
+      command=generar_pdf_peticion
     ).pack(anchor=CENTER, pady=20, padx=120)
 
     Button( 
@@ -85,7 +86,7 @@ class PDF_Vista(Toplevel):
       fg="black",
       cursor="hand2",
       width=30,
-      command=lambda: showinfo("creando", "creando pdf:p")
+      command=generar_pdf_respuesta
     ).pack(anchor=CENTER, pady=20, padx=120)
 
     if self:
