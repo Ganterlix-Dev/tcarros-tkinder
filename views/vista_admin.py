@@ -5,7 +5,7 @@ from views.vista_crear    import Crear_vista
 from views.vista_editar   import Editar_vista
 from views.vista_mostrar  import Mostrar_vista
 from views.vista_eliminar import Eliminar_vista
-from util.generar_pdf     import generar_pdf 
+from views.vista_pdf      import PDF_Vista
 from os                   import remove
 
 class Admin_vista(Toplevel):
@@ -109,7 +109,7 @@ class Admin_vista(Toplevel):
       fg="black",
       cursor="hand2",
       width=30,
-      command=generar_pdf
+      command=lambda: PDF_Vista(self, self.root, self.logo)
     ).pack(anchor=W, pady=20, padx=120)
 
     if self:
