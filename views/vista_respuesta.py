@@ -97,28 +97,14 @@ class Respuesta_vista(Toplevel):
     def responder(id_peticion, respuesta):
       sesion = open("sesion.json", "r")
       datos_mecanico  = sesion.readlines()[0]
-      datos_mecanico  = json.loads(datos_mecanico) #Datos convertidos a JSON
-      id_mecanico     = datos_mecanico["id"] #Extraigo el id del mecanico del JSON
-      print(id_mecanico, id_peticion, respuesta) #Estos son los datos que debes pasarle al controlador con el metodo insert que TU VAS A CREAR
+      datos_mecanico  = json.loads(datos_mecanico) 
+      id_mecanico     = datos_mecanico["id"] 
       resultado = resp.insert(id_mecanico, id_peticion, respuesta)
-      print("listo", resultado)
-      if resultado == resultado:
-        showinfo("EXITO", "Usuario creado exitosamente")
+      if resultado:
+        showinfo("EXITO", "Respuesta enviada exitosamente")
       else:
         showerror("ERROR", resultado["msg"])
-      # Ahora lo que tienes que hacer es crear el modelo y el controlador de la tabla respuesta
-
-      # models -> modelo_respuesta.py
-      # controllers -> controlador_respuesta.py
-
-      # Tanto en el modelo como en el controlador vas a crear la clase y agregarle el metodo insert con los parametros mecanico (donde ira el id del mecanico), peticion (donde ira el id de la peticion), y la respuesta (que seria la info de la respuesta)
-
-      # Cuando crees ambos importas el controlador y llamas al metodo pasandole los parametros:
-
-      # controlador_respuesta.insert(id_mecanico, id_peticion, respuesta)
-
-      # Y por ultimo muestras un mensaje con showinfo que diga que la respuesta se registro exitosamente
-
+      
     def actualizar_campos(id_label, id_entry, buscar_btn, peticion, id):
       words = peticion[4].split()
       
